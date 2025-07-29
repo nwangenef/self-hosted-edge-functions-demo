@@ -1,47 +1,51 @@
 # fly.toml file generated for supa-edge-demo on 2023-04-11T09:48:10+10:00
+# This is a comment showing when this file was created
 
-app = "supa-edge-demo-clumap-first-supabase-project-test"
-kill_signal = "SIGINT"
-kill_timeout = 5
-primary_region = "syd"
-processes = []
+app = "supa-edge-demo-clumap-first-supabase-project-test"  # Your app's unique name on Fly.io
+kill_signal = "SIGINT"                                     # Signal to send when stopping the app (standard interrupt)
+kill_timeout = 5                                           # How many seconds to wait before force-killing the app
+primary_region = "syd"                                     # Main region where your app runs (Sydney, Australia)
+processes = []                                             # List of different processes (empty = using default)
 
-[env]
+[env]                                                      # Environment variables section (currently empty)
+# You can add environment variables here like:
+# MY_SECRET = "value"
 
-[experimental]
-  auto_rollback = true
+[experimental]                                             # Experimental Fly.io features
+  auto_rollback = true                                     # Automatically rollback if deployment fails
 
-[[services]]
-  internal_port = 9000
-  processes = ["app"]
-  protocol = "tcp"
-  script_checks = []
-  [services.concurrency]
-    hard_limit = 25
-    soft_limit = 20
-    type = "connections"
-
-  [[services.http_checks]]
-    grace_period = "5s"
-    interval = 10000
-    method = "get"
-    path = "/_internal/health"
-    protocol = "http"
-    restart_limit = 0
-    timeout = 2000
-    tls_skip_verify = true
-
-  [[services.ports]]
-    force_https = false
-    handlers = ["http"]
-    port = 80
-
-  [[services.ports]]
-    handlers = ["tls", "http"]
-    port = 443
-
-  [[services.tcp_checks]]
-    grace_period = "1s"
-    interval = "15s"
-    restart_limit = 0
-    timeout = "2s"
+[[services]]                                               # Network services configuration (double brackets = array)
+  internal_port = 9000                                     # Port your app listens on inside the container
+  processes = ["app"]                                      # Which processes this service applies to
+  protocol = "tcp"                                         # Network protocol (TCP for web traffic)
+  script_checks = []                                       # Custom health check scripts (none defined)
+  
+  [services.concurrency]                                   # How many connections to handle simultaneously
+    hard_limit = 25                                        # Maximum connections before rejecting new ones
+    soft_limit = 20                                        # Preferred maximum connections
+    type = "connections"                                   # Type of limit (connections vs requests)
+  
+  [[services.http_checks]]                                 # HTTP health checks to monitor app health
+    grace_period = "5s"                                    # Wait 5 seconds after start before checking
+    interval = 10000                                       # Check every 10 seconds (in milliseconds)
+    method = "get"                                         # Use HTTP GET request
+    path = "/_internal/health"                             # URL path to check for health
+    protocol = "http"                                      # Use HTTP (not HTTPS) for internal checks
+    restart_limit = 0                                      # Don't restart based on failed health checks
+    timeout = 2000                                         # Wait 2 seconds for health check response
+    tls_skip_verify = true                                 # Skip SSL certificate verification
+  
+  [[services.ports]]                                       # HTTP port configuration (port 80)
+    force_https = false                                    # Don't force redirect HTTP to HTTPS
+    handlers = ["http"]                                    # Handle HTTP traffic
+    port = 80                                              # Standard HTTP port
+    
+  [[services.ports]]                                       # HTTPS port configuration (port 443)
+    handlers = ["tls", "http"]                             # Handle both TLS/SSL and HTTP traffic
+    port = 443                                             # Standard HTTPS port
+    
+  [[services.tcp_checks]]                                  # TCP-level health checks (lower level than HTTP)
+    grace_period = "1s"                                    # Wait 1 second after start
+    interval = "15s"                                       # Check every 15 seconds
+    restart_limit = 0                                      # Don't restart on failed TCP checks
+    timeout = "2s"                                         # Wait 2 seconds for TCP response
