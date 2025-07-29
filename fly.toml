@@ -11,6 +11,11 @@ processes = []                                             # List of different p
 # You can add environment variables here like:
 # MY_SECRET = "value"
 
+[[vm]]
+  memory = "256mb"
+  cpu_kind = "shared"
+  cpus = 1
+  
 [experimental]                                             # Experimental Fly.io features
   auto_rollback = true                                     # Automatically rollback if deployment fails
 
