@@ -4,7 +4,7 @@
 app = "supa-edge-demo-clumap-first-supabase-project-test"  # Your app's unique name on Fly.io
 kill_signal = "SIGINT"                                     # Signal to send when stopping the app (standard interrupt)
 kill_timeout = 5                                           # How many seconds to wait before force-killing the app
-primary_region = "syd"                                     # Main region where your app runs (Sydney, Australia)
+primary_region = "ord"                                     # Main region where your app runs (Sydney, Australia)
 processes = []                                             # List of different processes (empty = using default)
 
 [env]                                                      # Environment variables section (currently empty)
